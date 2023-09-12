@@ -28,7 +28,6 @@
     "jest/no-identical-title": "error",
     "jest/prefer-to-have-length": "warn",
     "jest/valid-expect": "error",
-    "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
-    "comma-dangle": ["error", "ignore"]
+    "import/no-extraneous-dependencies": ["error", {"devDependencies": true}]
   }
 }

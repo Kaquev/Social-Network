@@ -1,13 +1,12 @@
-import styles from "./../css/feed.module.css";
-import iconLogo from "./../asset/icons/Logo.tripify.svg";
-import iconFeed from "../asset/icons/Logo.feed.png";
-import  iconUser from "../asset/icons/user-circle.png"
-//import { userSession } from "./../lib/index";
-import { userSignOut } from "../lib/firebase";
+import styles from '../css/feed.module.css';
+import iconFeed from '../asset/icons/Logo.feed.png';
+import iconUser from '../asset/icons/user-circle.png';
 
-function feed (navigateTo) {
-  const sectionFeed = document.createElement("section");
-  sectionFeed.className = styles.feed_section
+import { userSignOut } from '../lib/firebase';
+
+function feed(navigateTo) {
+  const sectionFeed = document.createElement('section');
+  sectionFeed.className = styles.feed_section;
 
   const divFeed = `<div class="${styles.container_feed}">
   <header id="${styles.header_feed}">
@@ -38,30 +37,23 @@ function feed (navigateTo) {
   <footer>
       tripify
   </footer>
-  </div>`; 
-  
-
-  
-
- 
+  </div>`;
 
   const buttonLogOut = document.createElement('button');
   buttonLogOut.textContent = 'Cerrar Sesión';
-    buttonLogOut.addEventListener('click', async () => {
-      try {
-        await userSignOut();
-        navigateTo('/');
-      } catch (error) {
-        console.log(error);
-      }
-    });
-
- 
+  buttonLogOut.addEventListener('click', async () => {
+    try {
+      await userSignOut();
+      navigateTo('/');
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+    }
+  });
 
   sectionFeed.innerHTML = divFeed;
 
   return sectionFeed;
-
 }
 
 export default feed;

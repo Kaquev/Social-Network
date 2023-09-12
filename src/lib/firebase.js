@@ -1,13 +1,12 @@
 import { initializeApp } from 'firebase/app';
-
-import { 
-  getAuth, 
-  GoogleAuthProvider, 
-  signInWithPopup, 
-  signOut, 
-  sendPasswordResetEmail, 
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signOut,
+  sendPasswordResetEmail,
   createUserWithEmailAndPassword,
-  signInWithEmailAndPassword 
+  signInWithEmailAndPassword,
 } from 'firebase/auth';
 import { getFirestore, setDoc, doc } from 'firebase/firestore';
 
@@ -28,9 +27,10 @@ const auth = getAuth(app);
 const provider = new GoogleAuthProvider(app);
 const db = getFirestore(app);
 
-export const signInWithEmail = async ( email, password) => {
+export const signInWithEmail = async (email, password) => {
   try {
     const user = await signInWithEmailAndPassword(auth, email, password);
+    // eslint-disable-next-line no-console
     console.log(user);
   } catch (error) {
     throw new Error(error);
@@ -38,10 +38,10 @@ export const signInWithEmail = async ( email, password) => {
 };
 
 // funcion que ejecuta el login con google, muestra el pop up de gmail
-export const singInWithGoogle = async() => {
+export const singInWithGoogle = async () => {
   try {
     const response = await signInWithPopup(auth, provider);
-    await setDoc(doc(db, "users", response.user.uid), {
+    await setDoc(doc(db, 'users', response.user.uid), {
       name: response.user.displayName,
       email: response.user.email,
       origin: 'Google',
@@ -54,35 +54,34 @@ export const singInWithGoogle = async() => {
   } catch (error) {
     throw new Error(error);
   }
-}
+};
 
 export const createAccount = async (name, email, password) => {
   try {
     const response = await createUserWithEmailAndPassword(auth, email, password);
     const user = response.user;
-    await setDoc(doc(db, "users", user.uid), {
-      name: name,
-      email: email,
+    await setDoc(doc(db, 'users', user.uid), {
+      name,
+      email,
       origin: 'Tripify',
     });
     return {
-      name: name,
-      email: email,
+      name,
+      email,
       origin: 'Tripify',
     };
   } catch (error) {
     throw new Error(error);
   }
 };
-  
-export const userSignOut = async() => {
+
+export const userSignOut = async () => {
   signOut(auth).then(() => {
+    // eslint-disable-next-line no-console
     console.log('User signed out');
   }).catch((error) => {
-    
-  })
-}
+    throw new Error(error);
+  });
+};
 
-export const reseatEmail = async(email) => {
-  return sendPasswordResetEmail(auth, email);
-}
+export const reseatEmail = async (email) => sendPasswordResetEmail(auth, email);
