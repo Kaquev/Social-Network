@@ -24,10 +24,6 @@ label {
     font-size: 1.3rem;
 }
 
-label {
-    font-size: 1.3rem;
-}
-
 :root {
     --var_rosa: #E86972;
     --var_amarillo: #FFF479;
@@ -237,194 +233,6 @@ a {
     padding-bottom: 20px;
 }
 
-.img_logo {
-    width: 100%;
-    margin-top: 20px;
-}
-
-/* Section home*/
-.section_home {
-    display: grid;
-    grid-template-columns: 1fr;
-    background-color: var(--var-fondoHome);
-    justify-items: center;
-    min-height: 100vh;
-    justify-content: center;
-}
-
-.grilla_form {
-    padding: 24px 40px;
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-.grilla_form input:focus {
-    border: 1px solid #F1B33C !important;
-    outline: none !important;
-    box-shadow: 0 0 10px #F1B33C;
-}
-
-.grilla_form input {
-    border-radius: 12px;
-    height: 40px;
-    width: 95%;
-    border: var(--var_bordeinputoscuro);
-    justify-self: center;
-    margin-bottom: 20px;
-    margin-top: 10px;
-}
-
-.grilla_form label {
-    color: var(--var_colorfuente);
-    margin-top: 23px;
-    text-align: start;
-}
-
-.button_login {
-    background-color: var(--var_rosa);
-    border-radius: 24px;
-    height: 40px;
-    color: white;
-    border: var(--var_bordeinputblanco);
-    width: 71%;
-    justify-self: center;
-    font-size: 1.3rem;
-}
-
-.img_linea {
-    width: 96%;
-    margin-top: 20px
-}
-
-#button_google {
-    height: 40px;
-    width: 75%;
-    border: none;
-    background: transparent;
-    margin-top: 5px;
-}
-
-.img_google {
-    height: 126%;
-    width: 22%;
-    object-fit: cover;
-}
-
-.forget_password {
-    display: inline-block;
-    margin-bottom: 10px;
-    color: var(--var_colorfuente);
-    font-size: 1.3rem;
-    margin-top: 5px;
-}
-
-/*  Reset pass */
-.reset_password_container {
-    display: grid;
-    grid-template-columns: 1fr;
-    background-color: var(--var-fondoHome);
-    text-align: center;
-    justify-content: center;
-    justify-items: center;
-    padding-bottom: 40px;
-    min-height: 100vh;
-}
-
-.reset_password_title {
-    color: var(--var_colorfuente)
-}
-
-.reset_password_small_container {
-    width: 85%;
-    border: 1px solid rgba(241, 163, 255, 0.3);
-    background-color: #FFFCFD;
-    box-shadow: 2px 8px 40px 0px #834af48c;
-    padding: 25px;
-    margin: 35px 50px;
-    border-radius: 28px;
-}
-
-.reset_password_form input {
-    border-radius: 12px;
-    height: 40px;
-    width: 90%;
-    border: var(--var_bordeinputoscuro);
-    justify-self: center;
-    margin-top: 15px;
-}
-
-.reset_password_form input:focus {
-    border: 1px solid #F1B33C !important;
-    outline: none !important;
-    box-shadow: 0 0 10px #F1B33C;
-}
-
-.reset_password_button {
-    background-color: var(--var_amarillo);
-    border-radius: 24px;
-    height: 40px;
-    margin-top: 30px;
-    width: 200px;
-    border: 1px solid var(--var_naranjo);
-    color: var(--var_fontgeneral);
-    cursor: pointer;
-    font-size: 1.2rem;
-    font-weight: bold;
-}
-
-.reset_password_form label {
-    color: var(--var_colorfuente);
-    font-size: 1.3rem;
-}
-
-.reset_password_form button {
-    background-color: var(--var_rosa);
-    color: white;
-    border: 0px;
-}
-
-.reset_password_paragraph {
-    margin-top: 23px;
-    margin-bottom: 23px;
-    color: var(--var_colorfuente);
-    font-size: 1.1rem;
-    font-style: oblique;
-    font-weight: bolder;
-}
-
-.logoForget {
-    height: 50%;
-    margin-top: 10px;
-}
-
-/* Section New Account*/
-a {
-    color: var(--var_colorfuente);
-    font-size: 1.3rem;
-}
-
-.btn_crear_cuenta {
-    background-color: var(--var_amarillo);
-    border-radius: 24px;
-    height: 30px;
-    margin-top: 10px;
-    border: 1px solid var(--var_naranjo);
-    font-weight: bold;
-    color: var(--var_fontgeneral);
-    cursor: pointer;
-    font-size: 1.2rem;
-    width: 66%;
-    justify-self: center;
-}
-
-.back_home {
-    margin-top: 23px;
-    color: var(--var_colorfuente);
-    font-size: 1.3rem;
-    text-align: center;
-    padding-bottom: 20px;
-}
-
 /* error */
 
 .error_container {
@@ -541,9 +349,6 @@ a {
     cursor: pointer;
 }
 
-.img_logo {
-    width: 100%;
-}
 
 #main_feed {
     display: grid;
@@ -712,15 +517,6 @@ a {
     align-self: flex-end;
     font-size: 1.1rem;
     cursor: pointer;
-}
-
-.icon_post {
-    align-self: flex-start;
-}
-
-#profile_photo_post {
-    border-radius: 50px;
-    width: 60px;
 }
 
 .icon_post {
