@@ -188,7 +188,6 @@ export const likePost = async (postId, userId, id) => {
     deleteDoc(doc(db, 'likes', id));
   }
 };
-
 export const getLikes = async () => {
   const likeRef = collection(db, 'likes');
   const q = query(likeRef, where('userId', '==', sessionStorage.getItem('userId')));

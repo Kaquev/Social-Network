@@ -10,13 +10,16 @@ export const feed = async (navigateTo, getUserPhoto) => {
   const likes = await getLikes();
   posts.forEach((post) => {
     const photoUrl = post.photo || '../asset/icons/user-circle.png';
-    const hasLike = likes.find((like) => like.postId === post.id);
+    const hasLike = likes && likes.find((like) => like.postId === post.id);
     let starFilledClass = 'fa-regular';
     let idLikeFirebase = '';
     if (hasLike !== undefined) {
       starFilledClass = 'fa-solid star-filled';
       idLikeFirebase = hasLike.id;
     }
+
+    const likesForPost = likes.filter((like) => like.postId === post.id).length;
+
     HTMLPosts += `
     <div class="div_post">
       <div class="icon_perfil">
@@ -29,8 +32,11 @@ export const feed = async (navigateTo, getUserPhoto) => {
         <h4>${post.creationDate.toDate().toLocaleDateString('es-CL', options)}</h4>
         <p>${post.content}</p>
       </div>
+      <div class="container_likes">
       <i class="fa-star fa-md like_star ${starFilledClass}"
       style="color: #F1B33C;;cursor:pointer;" id="like_star" data-idpost="${post.id}" data-idfirebase="${idLikeFirebase}"></i>
+      <span class="like_count" data-likes="${likesForPost}" id="likes-${post.id}">${likesForPost}</span>
+      </div>
   </div>`;
   });
 
@@ -85,6 +91,15 @@ export const feed = async (navigateTo, getUserPhoto) => {
 
   sectionFeed.querySelectorAll('i.like_star').forEach((element) => {
     element.addEventListener('click', () => {
+      const spanLikes = sectionFeed.querySelector(`#likes-${element.getAttribute('data-idpost')}`);
+      let counter = 0;
+      if (element.classList.contains('star-filled')) {
+        counter = Number(spanLikes.getAttribute('data-likes')) - 1;
+      } else {
+        counter = Number(spanLikes.getAttribute('data-likes')) + 1;
+      }
+      spanLikes.innerHTML = `${counter}`;
+      spanLikes.setAttribute('data-likes', counter);
       element.classList.toggle('star-filled');
       element.classList.toggle('fa-regular');
       element.classList.toggle('fa-solid');

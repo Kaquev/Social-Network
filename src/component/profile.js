@@ -8,7 +8,7 @@ export const profile = async (navigateTo, getUserPhoto, getUserId, getUserName) 
   let HTMLPosts = '';
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
-  const userId = await getUserId();
+  const userId = sessionStorage.getItem('userId');
   const posts = await getPosts();
   const currentUserPosts = posts.filter((post) => post.userId === userId);
 
