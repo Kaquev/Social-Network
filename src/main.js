@@ -19,6 +19,7 @@ let userName = '';
 function getUserName() {
   return userName;
 }
+
 const routes = [
   { path: '/', component: home },
   { path: '/error', component: error },
@@ -64,6 +65,7 @@ async function navigateTo(hash) {
     }
   }
 }
+
 onAuthStateChanged(getAuth(), async (user) => {
   if (user) {
     console.log('Usuario autenticado');
@@ -78,6 +80,7 @@ onAuthStateChanged(getAuth(), async (user) => {
     sessionStorage.removeItem('loggedEmail');
   }
 });
+
 window.onpopstate = () => {
   navigateTo(window.location.pathname);
 };

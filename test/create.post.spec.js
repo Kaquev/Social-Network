@@ -7,25 +7,21 @@ describe('Create Post', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
-  // eslint-disable-next-line jest/no-focused-tests
   it('should be a function', () => {
     expect(typeof createPost).toBe('function');
   });
-  // eslint-disable-next-line jest/no-focused-tests
   it('should return a HTML element', () => {
     const navigateTo = jest.fn();
     const getUserPhoto = jest.fn();
     const getUserId = jest.fn();
     expect(createPost(navigateTo, getUserPhoto, getUserId)).toBeInstanceOf(HTMLElement);
   });
-  // eslint-disable-next-line jest/no-focused-tests
   it('should return a section element with a class name called "post_section"', () => {
     const navigateTo = jest.fn();
     const getUserPhoto = jest.fn();
     const getUserId = jest.fn();
     expect(createPost(navigateTo, getUserPhoto, getUserId).className).toBe('post_section');
   });
-  // eslint-disable-next-line jest/no-focused-tests
   it('should navigate to "/feed" when click icon"', () => {
     const navigateTo = jest.fn();
     const getUserPhoto = jest.fn();
@@ -40,7 +36,6 @@ describe('Create Post', () => {
     backToFeed.click();
     expect(navigateTo).toHaveBeenCalledWith('/feed');
   });
-  // eslint-disable-next-line jest/no-focused-tests
   it('should create a new post when clicked', () => {
     const navigateTo = jest.fn();
     const getUserPhoto = jest.fn();
@@ -57,7 +52,6 @@ describe('Create Post', () => {
     postButton.click();
     expect(newPost).toHaveBeenCalledTimes(1);
   });
-  // eslint-disable-next-line jest/no-focused-tests
   it('should not create a new post when clicked', () => {
     const alert = console.error;
     console.error = () => {};

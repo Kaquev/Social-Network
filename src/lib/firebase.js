@@ -177,15 +177,21 @@ export const deletePost = async (postId, userId) => {
   }
 };
 
-export const likePost = async (postId, userId, id) => {
-  if (id === '') {
-    const addLike = collection(db, 'likes');
-    addDoc(addLike, {
+export const likePost = async (postId, userId) => {
+  const likeRef = collection(db, 'likes');
+  const querys = query(likeRef, where('postId', '==', postId), where('userId', '==', userId));
+  const querySnapshot = await getDocs(querys);
+
+  if (querySnapshot.empty) {
+    // Si no existe un documento con el mismo postId y userId, agregamos un nuevo like.
+    await addDoc(likeRef, {
       userId,
       postId,
     });
   } else {
-    deleteDoc(doc(db, 'likes', id));
+    // Si ya existe un documento con el mismo postId y userId, lo eliminamos (quitar el like).
+    const likeDoc = querySnapshot.docs[0];
+    await deleteDoc(likeDoc.ref);
   }
 };
 export const getLikes = async () => {
@@ -197,4 +203,11 @@ export const getLikes = async () => {
     likes.push({ id: document.id, ...document.data() });
   });
   return likes;
+};
+
+export const lengthLikes = async (postId) => {
+  const likeRef = collection(db, 'likes');
+  const q = query(likeRef, where('postId', '==', postId));
+  const querySnapshot = await getDocs(q);
+  return querySnapshot.size;
 };

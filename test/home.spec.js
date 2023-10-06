@@ -2,7 +2,7 @@ import { fireEvent, getByText } from '@testing-library/dom';
 import { home } from '../src/component/home';
 import {
   signInWithEmail, singInWithGoogle,
-} from '../src/lib/firebase'; // Importa el módulo de Firebase
+} from '../src/lib/firebase';
 
 jest.mock('../src/lib/firebase');
 
@@ -32,7 +32,6 @@ describe('Home', () => {
     const button = getByText(element, 'Iniciar Sesión');
     fireEvent(button, new MouseEvent('click', {}));
   });
-  // eslint-disable-next-line jest/no-focused-tests
   it('should execute "signInWithEmail" with email and password as arguments when click "Iniciar Sesión"', async () => {
     const navigateTo = jest.fn();
     const section = await home(navigateTo);

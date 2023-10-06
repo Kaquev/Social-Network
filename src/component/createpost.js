@@ -41,7 +41,7 @@ function createPost(navigateTo, getUserPhoto, getUserId) {
       await newPost(userId, content);
       navigateTo('/feed');
     } else {
-      console.error('No content');
+      console.error('Sin contenido');
     }
   });
 

@@ -1,7 +1,7 @@
 import forgetPass from '../src/component/forgetpassword';
 import {
   resetEmail,
-} from '../src/lib/firebase'; // Importa el módulo de Firebase
+} from '../src/lib/firebase';
 
 jest.mock('../src/lib/firebase');
 

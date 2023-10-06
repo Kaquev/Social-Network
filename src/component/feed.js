@@ -1,4 +1,4 @@
-import { userSignOut, getPosts, likePost, getLikes } from '../lib/firebase';
+import { userSignOut, getPosts, likePost, getLikes, lengthLikes } from '../lib/firebase';
 
 export const feed = async (navigateTo, getUserPhoto) => {
   document.body.classList.add('no-bg');
@@ -18,7 +18,7 @@ export const feed = async (navigateTo, getUserPhoto) => {
       idLikeFirebase = hasLike.id;
     }
 
-    const likesForPost = likes.filter((like) => like.postId === post.id).length;
+    // const likesForPost = likes.filter((like) => like.postId === post.id).length;
 
     HTMLPosts += `
     <div class="div_post">
@@ -35,7 +35,7 @@ export const feed = async (navigateTo, getUserPhoto) => {
       <div class="container_likes">
       <i class="fa-star fa-md like_star ${starFilledClass}"
       style="color: #F1B33C;;cursor:pointer;" id="like_star" data-idpost="${post.id}" data-idfirebase="${idLikeFirebase}"></i>
-      <span class="like_count" data-likes="${likesForPost}" id="likes-${post.id}">${likesForPost}</span>
+      <span class="like_count" data-likes="" id="likes-${post.id}"></span>
       </div>
   </div>`;
   });
@@ -80,7 +80,6 @@ export const feed = async (navigateTo, getUserPhoto) => {
       await userSignOut();
       navigateTo('/');
     } catch (error) {
-      // throw new Error(error);
       alert('No se ha podido cerrar sesión');
     }
   });
@@ -89,25 +88,67 @@ export const feed = async (navigateTo, getUserPhoto) => {
     navigateTo('/create_post');
   });
 
-  sectionFeed.querySelectorAll('i.like_star').forEach((element) => {
+  // Función para actualizar el contador de likes en la carga de la página
+  const updateLikeCountOnLoad = async () => {
+    const likeButtons = sectionFeed.querySelectorAll('i.like_star');
+
+    likeButtons.forEach(async (element) => {
+      const postId = element.getAttribute('data-idpost');
+      const spanLikes = sectionFeed.querySelector(`#likes-${postId}`);
+
+      // Obtener la longitud de likes y actualizar el contador
+      const updatedLikesCount = await lengthLikes(postId);
+      spanLikes.innerHTML = updatedLikesCount;
+      spanLikes.setAttribute('data-likes', updatedLikesCount);
+    });
+  };
+
+  // Función para manejar el evento de clic en el botón de "like" del usuario
+  const handleLikeButtonClick = async (element) => {
+    const postId = element.getAttribute('data-idpost');
+    const userId = sessionStorage.getItem('userId');
+    const spanLikes = sectionFeed.querySelector(`#likes-${postId}`);
+
+    // Obtener el estado actual del botón "like"
+    const isLiked = element.classList.contains('star-filled');
+
+    if (isLiked) {
+    // Usuario quitó su like
+    // Llama a likePost para gestionar el like en Firebase
+      await likePost(postId, userId);
+
+      // Actualiza el contador de likes y el estado del botón "like"
+      const updatedLikesCount = await lengthLikes(postId);
+      spanLikes.innerHTML = updatedLikesCount;
+      spanLikes.setAttribute('data-likes', updatedLikesCount);
+      element.classList.remove('star-filled');
+      element.classList.add('fa-regular');
+      element.classList.remove('fa-solid');
+      console.log(`Número total de likes para postId ${postId}: ${updatedLikesCount}`);
+    } else {
+    // Usuario dio like
+    // Llama a likePost para gestionar el like en Firebase
+      await likePost(postId, userId);
+
+      // Actualiza el contador de likes y el estado del botón "like"
+      const updatedLikesCount = await lengthLikes(postId);
+      spanLikes.innerHTML = updatedLikesCount;
+      spanLikes.setAttribute('data-likes', updatedLikesCount);
+      element.classList.add('star-filled');
+      element.classList.remove('fa-regular');
+      element.classList.add('fa-solid');
+      console.log(`Número total de likes para postId ${postId}: ${updatedLikesCount}`);
+    }
+  };
+
+  // Llama a la función para actualizar el contador de likes al cargar la página
+  updateLikeCountOnLoad();
+
+  // Manejador de eventos para el botón de "like" del usuario
+  const likeButtons = sectionFeed.querySelectorAll('i.like_star');
+  likeButtons.forEach((element) => {
     element.addEventListener('click', () => {
-      const spanLikes = sectionFeed.querySelector(`#likes-${element.getAttribute('data-idpost')}`);
-      let counter = 0;
-      if (element.classList.contains('star-filled')) {
-        counter = Number(spanLikes.getAttribute('data-likes')) - 1;
-      } else {
-        counter = Number(spanLikes.getAttribute('data-likes')) + 1;
-      }
-      spanLikes.innerHTML = `${counter}`;
-      spanLikes.setAttribute('data-likes', counter);
-      element.classList.toggle('star-filled');
-      element.classList.toggle('fa-regular');
-      element.classList.toggle('fa-solid');
-      likePost(
-        element.getAttribute('data-idpost'),
-        sessionStorage.getItem('userId'),
-        element.getAttribute('data-idfirebase'),
-      );
+      handleLikeButtonClick(element);
     });
   });
 
