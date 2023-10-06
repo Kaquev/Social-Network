@@ -749,13 +749,6 @@ a {
         font-size: 1.1rem;
     }
 
-    #like_star {
-        display: flex;
-        flex-direction: column-reverse;
-        padding-bottom: 10px;
-        margin-right: 16px;
-    }
-
     #add_post {
         position: fixed;
         cursor: pointer;
@@ -767,6 +760,18 @@ a {
         border: #F1B33C 1px solid;
         transform: translate(-90px, -30px);
     }
+
+    .container_likes {
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: end;
+        padding-bottom: 10px;
+        margin-right: 16px;
+        color: #999;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
 }
 
 @media (900px < width < 1200px) {
