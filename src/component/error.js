@@ -1,26 +1,31 @@
-import styles from '../css/error.module.css';
-import iconLogo from '../asset/icons/Logo.tripify.svg';
-
-function error(navigateTo) {
+import logoTripify from '../asset/icons/Logo.tripify.svg';
+// eslint-disable-next-line no-unused-vars
+function error(navigateTo, getUserPhoto, getUserId) {
   const section = document.createElement('section');
-  section.className = styles.error_container;
+  section.classList.add('error_container');
 
   const logo = document.createElement('img');
-  logo.className = styles.img_logo;
-  logo.src = iconLogo;
+  logo.classList.add('img_logo');
+  logo.src = logoTripify;
 
   const title = document.createElement('h2');
-  title.className = styles.error_title;
+  title.classList.add('error_title');
 
   const backHome = document.createElement('button');
-  backHome.className = styles.error_button;
+  backHome.classList.add('error_button');
 
   title.textContent = 'Error 404: página no encontrada';
+
+  const userId = getUserId();
 
   backHome.textContent = 'Volver a inicio';
   backHome.addEventListener('click', (e) => {
     e.preventDefault();
-    navigateTo('/');
+    if (!userId) {
+      navigateTo('/');
+    } else {
+      navigateTo('/feed');
+    }
   });
 
   section.append(logo, title, backHome);

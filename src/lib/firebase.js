@@ -7,8 +7,23 @@ import {
   sendPasswordResetEmail,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  onAuthStateChanged,
+  updateProfile,
 } from 'firebase/auth';
-import { getFirestore, setDoc, doc } from 'firebase/firestore';
+import {
+  getFirestore,
+  setDoc,
+  doc,
+  addDoc,
+  collection,
+  getDoc,
+  getDocs,
+  deleteDoc,
+  query,
+  orderBy,
+  updateDoc,
+  where,
+} from 'firebase/firestore';
 
 // configuracion incial de firebase
 const firebaseConfig = {
@@ -27,20 +42,40 @@ const auth = getAuth(app);
 const provider = new GoogleAuthProvider(app);
 const db = getFirestore(app);
 
+// Función para verificar si hay un usuario conectado
+// eslint-disable-next-line no-unused-vars
+const checkIfUserIsLoggedIn = (callback) => {
+  const unsubscribe = onAuthStateChanged(auth, (user) => {
+    if (user) {
+      // Usuario conectado
+      callback(user);
+    } else {
+      // Usuario desconectado
+      callback(null);
+    }
+  });
+
+  // Devuelve la función unsubscribe para detener la escucha cuando sea necesario
+  return unsubscribe;
+};
+
+// Resto de tu código...
+
 export const signInWithEmail = async (email, password) => {
   try {
-    const user = await signInWithEmailAndPassword(auth, email, password);
-    // eslint-disable-next-line no-console
-    console.log(user);
+    const response = await signInWithEmailAndPassword(auth, email, password);
+    sessionStorage.setItem('userId', response.user.uid);
+    sessionStorage.setItem('loggedEmail', email);
   } catch (error) {
     throw new Error(error);
   }
 };
-
 // funcion que ejecuta el login con google, muestra el pop up de gmail
 export const singInWithGoogle = async () => {
   try {
     const response = await signInWithPopup(auth, provider);
+    sessionStorage.setItem('userId', response.user.uid);
+    sessionStorage.setItem('loggedEmail', response.user.email);
     await setDoc(doc(db, 'users', response.user.uid), {
       name: response.user.displayName,
       email: response.user.email,
@@ -60,6 +95,7 @@ export const createAccount = async (name, email, password) => {
   try {
     const response = await createUserWithEmailAndPassword(auth, email, password);
     const user = response.user;
+    await updateProfile(user, { displayName: name });
     await setDoc(doc(db, 'users', user.uid), {
       name,
       email,
@@ -77,11 +113,101 @@ export const createAccount = async (name, email, password) => {
 
 export const userSignOut = async () => {
   signOut(auth).then(() => {
-    // eslint-disable-next-line no-console
-    console.log('User signed out');
+    sessionStorage.removeItem('userId');
+    sessionStorage.removeItem('loggedEmail');
   }).catch((error) => {
     throw new Error(error);
   });
 };
 
-export const reseatEmail = async (email) => sendPasswordResetEmail(auth, email);
+export const resetEmail = async (email) => sendPasswordResetEmail(auth, email);
+
+export const newPost = async (userId, content) => {
+  const name = auth.currentUser.displayName;
+  const photo = auth.currentUser.photoURL;
+  const postRef = collection(db, 'posts');
+  await addDoc(postRef, {
+    name,
+    photo,
+    userId,
+    content,
+    creationDate: new Date(),
+  });
+};
+
+export const getPosts = async () => {
+  const postRef = collection(db, 'posts');
+  const q = query(postRef, orderBy('creationDate', 'desc'));
+  const querySnapshot = await getDocs(q);
+  const posts = [];
+  querySnapshot.forEach((document) => {
+    posts.push({ id: document.id, ...document.data() });
+  });
+  return posts;
+};
+
+export const getPost = async (idPost) => {
+  const postRef = collection(db, 'posts');
+  const q = query(postRef, where('id', '==', idPost));
+  return getDocs(q);
+};
+
+export const updatePost = async (idPost, content) => {
+  const postRef = doc(db, 'posts', idPost);
+  await updateDoc(postRef, {
+    content,
+  });
+};
+
+// 1. Asegúrate de que los usuarios estén autenticados.
+// Puedes hacerlo en tu código de autenticación de Firebase.
+
+// 2. Cuando un usuario quiera eliminar un post:
+export const deletePost = async (postId, userId) => {
+  // Verificar si el usuario está autorizado para eliminar el post según las reglas de seguridad
+  const postRef = doc(db, 'posts', postId);
+  const postSnapshot = await getDoc(postRef);
+
+  if (postSnapshot.exists() && postSnapshot.data().userId === userId) {
+    // El usuario está autorizado para eliminar el post
+    await deleteDoc(postRef);
+    console.log('El post se ha eliminado correctamente.');
+  } else {
+    console.log('No tienes permiso para eliminar este post.');
+  }
+};
+
+export const likePost = async (postId, userId) => {
+  const likeRef = collection(db, 'likes');
+  const querys = query(likeRef, where('postId', '==', postId), where('userId', '==', userId));
+  const querySnapshot = await getDocs(querys);
+
+  if (querySnapshot.empty) {
+    // Si no existe un documento con el mismo postId y userId, agregamos un nuevo like.
+    await addDoc(likeRef, {
+      userId,
+      postId,
+    });
+  } else {
+    // Si ya existe un documento con el mismo postId y userId, lo eliminamos (quitar el like).
+    const likeDoc = querySnapshot.docs[0];
+    await deleteDoc(likeDoc.ref);
+  }
+};
+export const getLikes = async () => {
+  const likeRef = collection(db, 'likes');
+  const q = query(likeRef, where('userId', '==', sessionStorage.getItem('userId')));
+  const querySnapshot = await getDocs(q);
+  const likes = [];
+  querySnapshot.forEach((document) => {
+    likes.push({ id: document.id, ...document.data() });
+  });
+  return likes;
+};
+
+export const lengthLikes = async (postId) => {
+  const likeRef = collection(db, 'likes');
+  const q = query(likeRef, where('postId', '==', postId));
+  const querySnapshot = await getDocs(q);
+  return querySnapshot.size;
+};

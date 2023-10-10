@@ -1,16 +1,15 @@
-/* eslint-disable no-console */
-import styles from '../css/home.module.css';
-import iconLogo from '../asset/icons/Logo.tripify.svg';
-import iconLinea from '../asset/icons/linea.icon.svg';
-// import { saveUserSession } from '../lib/index';
+import logotripify from '../asset/icons/Logo.tripify.svg';
+import orLine from '../asset/icons/linea.icon.svg';
+import imageGoogle from '../asset/icons/btn_google_signin_light_normal_web@2x.png';
 import { singInWithGoogle, signInWithEmail } from '../lib/firebase';
 
-function home(navigateTo) {
+export const home = async (navigateTo) => {
+  document.body.classList.remove('no-bg');
   const sectionHome = document.createElement('section');
-  sectionHome.className = styles.contenedor_home;
+  sectionHome.classList.add('section_home');
 
   const logo = document.createElement('img');
-  logo.className = styles.img_logo;
+  logo.classList.add('img_logo');
 
   const errorLogin = document.createElement('p');
   errorLogin.setAttribute('id', 'incorrect_user');
@@ -20,7 +19,7 @@ function home(navigateTo) {
   errorLogin.style.display = 'none';
 
   const formGrilla = document.createElement('form');
-  formGrilla.className = styles.grilla_form;
+  formGrilla.classList.add('grilla_form');
   formGrilla.setAttribute('id', 'form_login');
 
   const labelEmail = document.createElement('label');
@@ -31,21 +30,29 @@ function home(navigateTo) {
   inputPass.type = 'password';
 
   const buttonGoogle = document.createElement('button');
-  buttonGoogle.className = styles.button_google;
+  const btnGoogle = document.createElement('img');
+  btnGoogle.src = '../asset/icons/btn_google_signin_light_normal_web@2x.png';
+  buttonGoogle.id = 'button_google';
+  btnGoogle.id = 'img_google';
+  buttonGoogle.appendChild(btnGoogle);
+
+  // buttonGoogle.textContent('');
 
   const lineaIcon = document.createElement('img');
-  lineaIcon.className = styles.img_linea;
+  lineaIcon.classList.add('img_linea');
 
   const buttonLogin = document.createElement('button');
-  buttonLogin.className = styles.button_login;
+  buttonLogin.classList.add('button_login');
 
   const forgetPass = document.createElement('a');
+  forgetPass.classList.add('forget_password');
 
   const newAccount = document.createElement('button');
-  newAccount.className = styles.btn_crear_cuenta;
+  newAccount.classList.add('btn_crear_cuenta');
 
-  logo.src = iconLogo;
-  lineaIcon.src = iconLinea;
+  logo.src = logotripify;
+  lineaIcon.src = orLine;
+  btnGoogle.src = imageGoogle;
 
   buttonLogin.textContent = 'Iniciar Sesión';
   buttonLogin.setAttribute('type', 'submit');
@@ -54,15 +61,11 @@ function home(navigateTo) {
     const email = inputEmail.value;
     const password = inputPass.value;
     try {
-      // eslint-disable-next-line no-unused-vars
-      const userData = await signInWithEmail(email, password);
-      console.log('User signed in');
+      await signInWithEmail(email, password);
       navigateTo('/feed');
     } catch (error) {
       errorLogin.style.display = 'block';
-      console.error('Error al iniciar sesión:', error.message);
-      const cleanForm = document.getElementById('form_login');
-      cleanForm.reset();
+      formGrilla.reset();
     }
   });
 
@@ -73,17 +76,19 @@ function home(navigateTo) {
   buttonGoogle.addEventListener('click', async (e) => {
     e.preventDefault();
     try {
-      const user = await singInWithGoogle();
-      console.log(user);
+      await singInWithGoogle();
       navigateTo('/feed');
     } catch (error) {
       errorLogin.style.display = 'block';
-      console.log(error);
     }
   });
 
   forgetPass.textContent = '¿Olvidaste tu contraseña?';
-  forgetPass.setAttribute('href', '/forgetpassword');
+  forgetPass.addEventListener('click', (e) => {
+    e.preventDefault();
+    navigateTo('/forget_password');
+  });
+  forgetPass.setAttribute('href', '');
 
   newAccount.textContent = 'Crear nueva cuenta';
   newAccount.addEventListener('click', (e) => {
@@ -105,6 +110,4 @@ function home(navigateTo) {
   sectionHome.append(logo, errorLogin, formGrilla);
 
   return sectionHome;
-}
-
-export default home;
+};

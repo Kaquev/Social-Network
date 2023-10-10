@@ -1,16 +1,16 @@
-import styles from '../css/new.account.module.css';
-import iconLogo from '../asset/icons/Logo.tripify.svg';
+import logotripify from '../asset/icons/Logo.tripify.svg';
 import { createAccount } from '../lib/firebase';
 
 function newAccount(navigateTo) {
+  document.body.classList.remove('no-bg');
   const sectionAccount = document.createElement('section');
-  sectionAccount.className = styles.contenedor_account;
+  sectionAccount.classList.add('container_account');
 
   const logo = document.createElement('img');
-  logo.className = styles.img_logo;
+  logo.classList.add('img_logo');
 
   const formGrilla = document.createElement('form');
-  formGrilla.className = styles.grilla_form;
+  formGrilla.classList.add('grilla_form');
 
   const labelEmail = document.createElement('label');
   const inputEmail = document.createElement('input');
@@ -26,14 +26,14 @@ function newAccount(navigateTo) {
   inputRepeatPass.type = 'password';
 
   const btnAccount = document.createElement('button');
-  btnAccount.className = styles.btn_crear_cuenta;
+  btnAccount.classList.add('btn_crear_cuenta');
 
   const linkLogin = document.createElement('p');
-  linkLogin.className = styles.back_home;
+  linkLogin.classList.add('back_home');
 
   const singIn = document.createElement('a');
 
-  logo.src = iconLogo;
+  logo.src = logotripify;
 
   labelEmail.textContent = 'Correo electrónico';
   labelUserName.textContent = 'Nombre de usuario';
@@ -42,37 +42,38 @@ function newAccount(navigateTo) {
 
   btnAccount.textContent = 'Crear Cuenta';
 
-  linkLogin.innerHTML = '¿Ya tienes una cuenta? <br>';
-  singIn.innerHTML = ' <br> Inicia sesión';
-  singIn.setAttribute('href', '/');
+  linkLogin.innerHTML = '¿Ya tienes una cuenta? ';
+  singIn.innerHTML = ' Inicia sesión';
+  singIn.addEventListener('click', (e) => {
+    e.preventDefault();
+    navigateTo('/');
+  });
+  singIn.setAttribute('href', '');
 
   btnAccount.addEventListener('click', async (e) => {
     e.preventDefault();
 
     const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     const passwordPattern = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
-    const userNamePattern = /^[a-zA-Z0-9]{1,12}$/;
+    const userNamePattern = /^[a-zA-Z0-9]{3,12}$/;
 
     if (
       inputEmail.value.trim() !== ''
       && inputUserName.value.trim() !== ''
       && inputPass.value.trim() !== ''
       && inputRepeatPass.value.trim() !== '') {
-      // Validar el formato del correo electrónico
       if (!emailPattern.test(inputEmail.value)) {
         // eslint-disable-next-line no-alert
         alert('Por favor, ingresa un correo electrónico válido.');
         return;
       }
 
-      // Validar el nombre de usuario
       if (!userNamePattern.test(inputUserName.value)) {
         // eslint-disable-next-line no-alert
-        alert('El nombre de usuario debe tener entre 1 y 12 caracteres alfanuméricos.');
+        alert('El nombre de usuario debe tener entre 3 y 12 caracteres alfanuméricos.');
         return;
       }
 
-      // Validar la contraseña
       if (!passwordPattern.test(inputPass.value)) {
         // eslint-disable-next-line no-alert
         alert('La contraseña debe contener al menos 8 caracteres, 1 mayúscula y 1 número.');
@@ -84,23 +85,15 @@ function newAccount(navigateTo) {
         alert('Las contraseñas deben coincidir.');
         return;
       }
-      // Utiliza signUpAndSaveData para crear el usuario y guardar datos adicionales
+
       try {
-        const user = await createAccount(inputUserName.value, inputEmail.value, inputPass.value);
-        // console.log(saveUserSession(user));
-        // eslint-disable-next-line no-console
-        console.log('Usuario creado:', user);
+        // await createAccount(inputUserName.value, inputEmail.value, inputPass.value);
+        await createAccount(inputUserName.value, inputEmail.value, inputPass.value);
         navigateTo('/');
       } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error('Error al crear usuario y guardar datos:', error);
         // eslint-disable-next-line no-alert
-        alert(`No se ha podido crear el usuario${error.message}`);
+        alert('No se ha podido crear el usuario');
       }
-      // signUpAndSaveData(inputUserName.value, inputEmail.value, inputPass.value).then(user => {
-      // navigateTo('/');
-      // () => {
-      // alert('No se ha podido crear el usuario');});
     } else {
       // eslint-disable-next-line no-alert
       alert('Los campos son obligatorios.');

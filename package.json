@@ -9,13 +9,20 @@
     "firebase",
     "jest"
   ],
+  "jest": {
+    "testEnvironment": "jsdom",
+    "moduleNameMapper": {
+      "\\.(jpg|ico|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/mocks/fileMock.js",
+      "\\.(css|less)$": "<rootDir>/mocks/fileMock.js"
+    }
+  },
   "license": "MIT",
   "scripts": {
     "htmlhint": "htmlhint dist/*.html ",
     "eslint": "eslint --ext .js src/ test/",
     "stylelint": "stylelint --aei src/**/*.css",
     "pretest": "npm run htmlhint && npm run eslint && npm run stylelint",
-    "test": "jest --env=jsdom --coverage",
+    "test": "jest --coverage",
     "dev": "vite dev src",
     "start": "npm run dev",
     "build": "vite build",
@@ -23,12 +30,14 @@
   },
   "devDependencies": {
     "@babel/preset-env": "^7.19.4",
+    "@testing-library/dom": "^9.3.1",
     "eslint": "^8.3.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jest": "^25.3.0",
     "htmlhint": "^1.0.0",
     "jest": "^27.0.1",
+    "jsdom": "^22.1.0",
     "regenerator-runtime": "^0.13.1",
     "stylelint": "^14.1.0",
     "stylelint-config-recommended": "^6.0.0",
@@ -43,6 +52,7 @@
     "commit": "3cf716dfe2a8c328a7e9dce5c030cb2c3ab8531c"
   },
   "dependencies": {
-    "firebase": "^10.3.1"
+    "firebase": "^10.3.1",
+    "sweetalert": "^2.1.2"
   }
 }

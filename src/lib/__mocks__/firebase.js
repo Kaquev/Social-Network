@@ -1,0 +1,13 @@
+export const signInWithEmail = jest.fn();
+export const singInWithGoogle = jest.fn();
+export const createAccount = jest.fn();
+export const userSignOut = jest.fn();
+export const resetEmail = jest.fn();
+export const newPost = jest.fn();
+export const getPosts = jest.fn();
+export const getPost = jest.fn();
+export const updatePost = jest.fn();
+export const deletePost = jest.fn();
+export const likePost = jest.fn();
+export const getLikes = jest.fn();
+export const lengthLikes = jest.fn();
