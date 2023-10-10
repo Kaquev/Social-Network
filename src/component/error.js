@@ -1,3 +1,4 @@
+import logoTripify from '../asset/icons/Logo.tripify.svg';
 // eslint-disable-next-line no-unused-vars
 function error(navigateTo, getUserPhoto, getUserId) {
   const section = document.createElement('section');
@@ -5,7 +6,7 @@ function error(navigateTo, getUserPhoto, getUserId) {
 
   const logo = document.createElement('img');
   logo.classList.add('img_logo');
-  logo.src = '../asset/icons/Logo.tripify.svg';
+  logo.src = logoTripify;
 
   const title = document.createElement('h2');
   title.classList.add('error_title');

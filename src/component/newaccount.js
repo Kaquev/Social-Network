@@ -1,3 +1,4 @@
+import logotripify from '../asset/icons/Logo.tripify.svg';
 import { createAccount } from '../lib/firebase';
 
 function newAccount(navigateTo) {
@@ -32,7 +33,7 @@ function newAccount(navigateTo) {
 
   const singIn = document.createElement('a');
 
-  logo.src = '../asset/icons/Logo.tripify.svg';
+  logo.src = logotripify;
 
   labelEmail.textContent = 'Correo electrónico';
   labelUserName.textContent = 'Nombre de usuario';

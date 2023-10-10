@@ -1,3 +1,5 @@
+import userDefault from '../asset/icons/user-circle.png';
+import logoFeed from '../asset/icons/Logo.feed.png';
 import { userSignOut, getPosts, likePost, getLikes, lengthLikes } from '../lib/firebase';
 
 export const feed = async (navigateTo, getUserPhoto) => {
@@ -9,7 +11,7 @@ export const feed = async (navigateTo, getUserPhoto) => {
   const posts = await getPosts();
   const likes = await getLikes();
   posts.forEach((post) => {
-    const photoUrl = post.photo || '../asset/icons/user-circle.png';
+    const photoUrl = post.photo || userDefault;
     const hasLike = likes && likes.find((like) => like.postId === post.id);
     let starFilledClass = 'fa-regular';
     let idLikeFirebase = '';
@@ -41,7 +43,8 @@ export const feed = async (navigateTo, getUserPhoto) => {
   });
 
   const userPhoto = getUserPhoto();
-  const photoUrl = userPhoto || '../asset/icons/user-circle.png';
+  const photoUrl = userPhoto || userDefault;
+  const logo = logoFeed;
 
   const divFeed = `
     <div class="container_feed">
@@ -50,7 +53,7 @@ export const feed = async (navigateTo, getUserPhoto) => {
          <img src="${photoUrl}" alt="random image" id="profile_photo">
         </div>
         <div class="logo">
-          <img src="../asset/icons/Logo.feed.png" alt=" image">
+          <img src="${logo}" alt=" image">
         </div>
       </header>
     <nav class="nav_container_up">

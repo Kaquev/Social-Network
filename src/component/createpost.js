@@ -1,3 +1,4 @@
+import userDefault from '../asset/icons/user-circle.png';
 import { newPost } from '../lib/firebase';
 
 function createPost(navigateTo, getUserPhoto, getUserId) {
@@ -5,7 +6,7 @@ function createPost(navigateTo, getUserPhoto, getUserId) {
   sectionPost.classList.add('post_section');
 
   const userPhoto = getUserPhoto();
-  const photoUrl = userPhoto || '../asset/icons/user-circle.png';
+  const photoUrl = userPhoto || userDefault;
 
   const divPost = `
   <div class="post_big_container">

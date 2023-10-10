@@ -1,4 +1,5 @@
 import swal from 'sweetalert';
+import userDefault from '../asset/icons/user-circle.png';
 import { getPosts, deletePost, updatePost } from '../lib/firebase';
 
 export const profile = async (navigateTo, getUserPhoto, getUserId, getUserName) => {
@@ -13,7 +14,7 @@ export const profile = async (navigateTo, getUserPhoto, getUserId, getUserName) 
   const currentUserPosts = posts.filter((post) => post.userId === userId);
 
   currentUserPosts.forEach((post, index) => {
-    const photoUrl = post.photo || '../asset/icons/user-circle.png';
+    const photoUrl = post.photo || userDefault;
     const postElement = document.createElement('div');
     postElement.innerHTML = `
     <div class="div_post">
@@ -47,7 +48,7 @@ export const profile = async (navigateTo, getUserPhoto, getUserId, getUserName) 
 
   const userName = await getUserName();
   const userPhoto = await getUserPhoto();
-  const photoUrl = userPhoto || '../asset/icons/user-circle.png';
+  const photoUrl = userPhoto || userDefault;
 
   const divProfile = `
     <div class="container_profile">

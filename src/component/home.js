@@ -1,3 +1,6 @@
+import logotripify from '../asset/icons/Logo.tripify.svg';
+import orLine from '../asset/icons/linea.icon.svg';
+import imageGoogle from '../asset/icons/btn_google_signin_light_normal_web@2x.png';
 import { singInWithGoogle, signInWithEmail } from '../lib/firebase';
 
 export const home = async (navigateTo) => {
@@ -47,8 +50,9 @@ export const home = async (navigateTo) => {
   const newAccount = document.createElement('button');
   newAccount.classList.add('btn_crear_cuenta');
 
-  logo.src = '../asset/icons/Logo.tripify.svg';
-  lineaIcon.src = '../asset/icons/linea.icon.svg';
+  logo.src = logotripify;
+  lineaIcon.src = orLine;
+  btnGoogle.src = imageGoogle;
 
   buttonLogin.textContent = 'Iniciar Sesión';
   buttonLogin.setAttribute('type', 'submit');

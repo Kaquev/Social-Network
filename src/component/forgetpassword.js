@@ -1,3 +1,4 @@
+import logotripify from '../asset/icons/Logo.tripify.svg';
 import { resetEmail } from '../lib/firebase';
 
 function forgetPass(navigateTo) {
@@ -7,7 +8,7 @@ function forgetPass(navigateTo) {
 
   const logoForget = document.createElement('img');
   logoForget.classList.add('img_logo');
-  logoForget.src = '../asset/icons/Logo.tripify.svg';
+  logoForget.src = logotripify;
 
   const title = document.createElement('h1');
   title.classList.add('reset_password_title');
